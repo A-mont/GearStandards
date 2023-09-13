@@ -10,11 +10,11 @@ include!(concat!(env!("OUT_DIR"), "/wasm_binary.rs"));
 
 
 
-static mut STATE:Option<HashMap<ActorId, String>> = None;
+static mut STATE:Option<HashMap<ActorId, u128>> = None;
 
 
 
-fn state_mut() -> &'static mut HashMap<ActorId,String> {
+fn state_mut() -> &'static mut HashMap<ActorId,u128> {
 
     let state = unsafe { STATE.as_mut()};
 
@@ -78,7 +78,7 @@ fn handle_state() -> Result<()> {
 
         // We create a state variable.
         let state: <ContractMetadata as Metadata>::State =
-            state_mut().iter().map(|(k, v)| (*k, v.clone())).collect();
+            state_mut().iter().map(|(k, v)| (*k, *v)).collect();
          
         // Generate response message
         msg::reply(state, 0).expect("failed to encode or reply from `state()`");
