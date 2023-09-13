@@ -45,20 +45,24 @@ extern "C" fn handle(){
 
 fn handle_state() -> Result<()> {
 
+
+        // We load the input message
         let payload = msg::load()?;
 
-        if let Action::"Add your action(Enum) " = payload {
+        
+        // We receive an action from the user and update the state. Example:
+        if let Action::ExampleAction = payload {
 
             let currentstate = state_mut();
 
 
 
-            // Update your state
-            currentstate.insert(msg::source(), "Green".to_string());
+            // Update your state Example: (ActorId,u128)
+            currentstate.insert(msg::source(), 10);
             
 
             // Generate response message
-            msg::reply(Event::"Add your Event (Enum)",0)?;
+            msg::reply(Event::ExampleEvent,0)?;
 
         }
 
@@ -71,8 +75,11 @@ fn handle_state() -> Result<()> {
 
     #[no_mangle]
     extern "C" fn state() {
+
+        // We create a state variable.
         let state: <ContractMetadata as Metadata>::State =
             state_mut().iter().map(|(k, v)| (*k, v.clone())).collect();
-    
+         
+        // Generate response message
         msg::reply(state, 0).expect("failed to encode or reply from `state()`");
     }
