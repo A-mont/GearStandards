@@ -36,6 +36,6 @@ impl Metadata for ContractMetadata{
      type Others = ();
      type Reply=();
      type Signal = ();
-     type State = Vec<(ActorId, String)>;
+     type State = Vec<(ActorId, u128)>;
 
 }
